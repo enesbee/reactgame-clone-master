@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script crossorigin src='https://unpkg.com/react@16/umd/react.development.js'></script>
+  <script crossorigin src='https://unpkg.com/react-dom@16/umd/react-dom.development.js'></script>
+  <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
+</head>
+<body>
+<div id='root'></div>
+<script type='text/babel'>
+  // 클래스 함수
+  // class GuGuDan extends React.Component {
+  //   constructor(props) {
+  //     super(props);
+  //     this.state = {
+  //       firstNumber : Math.ceil(Math.random() * 9),
+  //       secondNumber : Math.ceil(Math.random() * 9),
+  //       value: '',
+  //       result : ''
+  //     }
+  //   }
+  //
+  //   onSubmit = (e) => {
+  //     e.preventDefault();
+  //     if(parseInt(this.state.value) === this.state.firstNumber * this.state.secondNumber) {
+  //       this.setState((prevProps)=> {
+  //         return {
+  //           result: `정답 : ${prevProps.value}`,
+  //           firstNumber: Math.ceil(Math.random() * 9),
+  //           secondNumber: Math.ceil(Math.random() * 9),
+  //           value: '',
+  //         }
+  //       })
+  //       this.input.focus();
+  //     } else {
+  //       this.setState({
+  //         result: '땡',
+  //         value: '',
+  //       })
+  //       this.input.focus();
+  //     }
+  //   };
+  //
+  //   onChange = (e)=> {
+  //     this.setState({value: e.target.value})
+  //   };
+  //
+  //   render(){
+  //     return (
+  //       <React.Fragment>
+  //         <div>{this.state.firstNumber} 곱하기 {this.state.secondNumber}는?</div>
+  //         <form action='' onSubmit={this.onSubmit}>
+  //           <label>
+  //             <input ref={(c)=> {this.input = c; }} type='number' value={this.state.value} onChange={this.onChange} />
+  //           </label>
+  //           <button>입력!</button>
+  //         </form>
+  //         <div>{this.state.result}</div>
+  //       </React.Fragment>
+  //     );
+  //   }
+  // }
+
+  // React Hooks
+  const GuGuDan = () => {
+    //클래스함수때 this.state 안에 있던걸 하나하나 개별적으로 분리함.
+    const [firstNumber, setFirstNumber] = React.useState(Math.ceil(Math.random() * 9)); // setFirstNumber은 firstNumber 전용 setState
+    const [secondNumber, setSecondNumber] = React.useState(Math.ceil(Math.random() * 9));
+    const [value, setValue] = React.useState('');
+    const [result, setResult] = React.useState('');
+    const onRefInput = React.useRef(null);
+
+    const onSubmit = (e) => {
+      e.preventDefault();
+      if(parseInt(value) === firstNumber * secondNumber) {
+        setResult(`정답 : ${value}`);
+        setFirstNumber(Math.ceil(Math.random() * 9));
+        setSecondNumber(Math.ceil(Math.random() * 9));
+        setValue('');
+        onRefInput.current.focus();
+      } else {
+        setResult(`땡`);
+        setValue('');
+        onRefInput.current.focus();
+      }
+    };
+    const onChange = (e) => {
+      setValue(e.target.value);
+    }
+    return (
+      <React.Fragment>
+        <div>{firstNumber} 곱하기 {secondNumber}는?</div>
+        <form action='' onSubmit={onSubmit}>
+          <label>
+            <input ref={onRefInput} type='number' value={value} onChange={onChange} />
+          </label>
+          <button>입력!</button>
+        </form>
+        <div>{result}</div>
+      </React.Fragment>
+    );
+  }
+</script>
+<script type='text/babel'>
+  ReactDOM.render(<GuGuDan/>, document.querySelector('#root'));
+</script>
+</body>
+</html>
