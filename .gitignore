@@ -122,6 +122,6 @@ dist
 .pnp.*
 
 # Other
-package-lock.json
+WordChain/package-lock.json
 backend/uploads
 static/
