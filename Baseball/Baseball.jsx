@@ -1,38 +1,45 @@
-const React = require('react');
-const { useState, useRef } = React;
+import React, { Component } from 'react';
+import Try from './Try';
 
-const Baseball = () => {
-  const [word, setWord] = useState('쿠다닥');
-  const [value, setValue] = useState('');
-  const [result, setResult] = useState('');
-  const inputRef = useRef(null);
-  
-  const onSubmitForm = (e) => {
+// const Baseball = () => {
+// };
+
+function getNumbers() {} // 숫자 네 개를 겹치지 않고 랜덤하게 출력하는 함수
+
+class Baseball extends Component {
+  state = {
+    result: '',
+    value: '',
+    answer: getNumbers(),
+    tries: [],
+  };
+  onSubmitForm = (e) => {
     e.preventDefault();
-    if (word[word.length - 1] === value[0]) {
-      setWord(value);
-      setValue('');
-      setResult('딩동댕');
-      inputRef.current.focus();
-    } else {
-      setValue('');
-      setResult('땡');
-      inputRef.current.focus();
-    }
+    console.log(this.state.value);
   };
-  const onChangeInput = (e) => {
-    setValue(e.target.value);
+
+  onChangeInput = (e) => {
+    this.setState({
+      value: e.target.value,
+    });
   };
-  
-  return (
-    <>
-      <div>{word}</div>
-      <form onSubmit={onSubmitForm}>
-        <input ref={inputRef} value={value} onChange={onChangeInput} />
-        <button>입력</button>
-      </form>
-      <div>{result}</div>
-    </>
-  );
-};
-module.exports = Baseball;
+  render() {
+    return (
+      <>
+        <h1>{this.state.result}</h1>
+        <form action="" onSubmit={this.onSubmitForm}>
+          <input type="text" maxLength={4} value={this.state.value} onChange={this.onChangeInput} />
+        </form>
+        <div>시도 : {this.state.tries.length}</div>
+        <ul>
+          {this.state.tries.map((v, i) => {
+            return <Try key={v + i} value={v} index={i} />;
+          })}
+        </ul>
+      </>
+    );
+  }
+}
+
+// export const hi = 'hi'; // 구조분해 import { hi } from ....;
+export default Baseball; // import Baseball from ....;

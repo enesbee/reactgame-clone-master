@@ -1,14 +1,15 @@
 const path = require('path');
-const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
 module.exports = {
-  name: 'baseball',
+  name: 'number-baseball-dev',
   mode: 'development',
-  devtool: 'eval', // hidden-source-map
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.js', '.jsx'],
   },
   entry: {
-    app: ['./client'],
+    app: './client',
   },
   module: {
     rules: [
@@ -20,27 +21,26 @@ module.exports = {
             [
               '@babel/preset-env',
               {
-                targets: {
-                  browsers: ['> 1% in KR', 'last 2 chrome versions'],
-                },
+                targets: { browsers: ['last 2 chrome versions'] },
                 debug: true,
               },
             ],
             '@babel/preset-react',
           ],
-          plugins: ['@babel/plugin-proposal-class-properties', 'react-refresh/babel'],
+          plugins: ['react-refresh/babel'],
         },
+        exclude: path.join(__dirname, 'node_modules'),
       },
     ],
   },
-  plugins: [new RefreshWebpackPlugin()],
+  plugins: [new ReactRefreshWebpackPlugin()],
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'app.js',
-    publicPath: '/dist/',
+    filename: '[name].js',
+    publicPath: '/dist',
   },
   devServer: {
-    publicPath: '/dist/',
+    publicPath: '/dist',
     hot: true,
   },
 };

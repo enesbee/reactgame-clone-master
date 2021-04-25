@@ -19,7 +19,8 @@
   "homepage": "https://github.com/enesbee/reactgame-clone-master#readme",
   "dependencies": {
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-hot-loader": "^4.13.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",
