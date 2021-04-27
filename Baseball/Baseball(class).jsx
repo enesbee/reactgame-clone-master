@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import Try from './Try(class)';
 
 // const Baseball = () => {
@@ -21,6 +21,11 @@ class Baseball extends Component {
     answer: getNumbers(),
     tries: [],
   };
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {}
+  // GrandParent -> Parent -> Children
+  // GP 가 C에 주기위해선 P를 거쳐야 함. 따라서 Parent 의문의 렌더링행.
+  // 그래서 Context를 활용해 GP에서 C로 바로 넘겨줌. (이러면서 Redux가 나옴)
 
   onSubmitForm = (e) => {
     e.preventDefault();
@@ -54,6 +59,7 @@ class Baseball extends Component {
           answer: getNumbers(),
           tries: [],
         });
+        this.inputRef.current.focus();
       } else {
         // 아직 10회 이상 틀리지 않았을 경우
         for (let i = 0; i < 4; i += 1) {
@@ -69,6 +75,7 @@ class Baseball extends Component {
             value: '',
           };
         });
+        this.inputRef.current.focus(); // 포커스 주고 싶을 때 input쪽에 inputRef 라고 해서 Ref 준게 있음. 확인 ㄱㄱ
       }
     }
   };
@@ -78,12 +85,15 @@ class Baseball extends Component {
       value: e.target.value,
     });
   };
+
+  inputRef = createRef();
+
   render() {
     return (
       <>
         <h1>{this.state.result}</h1>
         <form action="" onSubmit={this.onSubmitForm}>
-          <input type="text" maxLength={4} value={this.state.value} onChange={this.onChangeInput} />
+          <input type="text" ref={this.inputRef} maxLength={4} value={this.state.value} onChange={this.onChangeInput} />
         </form>
         <div>시도 : {this.state.tries.length}</div>
         <ul>
